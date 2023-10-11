@@ -4,7 +4,7 @@
 
 ## Features
 
-- Register and Login
+- Admin can register and login
 
 * User
 
