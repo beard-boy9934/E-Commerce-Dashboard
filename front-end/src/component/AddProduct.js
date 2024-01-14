@@ -20,7 +20,7 @@ const AddProduct = () => {
 
     let result;
     await axios
-      .post("http://localhost:5000/add-product", {
+      .post("https://e-commerce-8edl.onrender.com/add-product", {
         name,
         price,
         category,
@@ -36,7 +36,7 @@ const AddProduct = () => {
         console.log(err);
       });
 
-    // let result = await fetch("http://localhost:5000/add-product", {
+    // let result = await fetch("https://e-commerce-8edl.onrender.com/add-product", {
     //   method: "post",
     //   body: JSON.stringify({ name, price, category, company, userId }),
     //   headers: {

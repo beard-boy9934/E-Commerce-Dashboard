@@ -14,7 +14,7 @@ const UpdateProduct = () => {
   }, []);
   const getProductDetails = async () => {
     console.warn(params);
-    let result = await fetch(`http://localhost:5000/products/${params.id}`);
+    let result = await fetch(`https://e-commerce-8edl.onrender.com/products/${params.id}`);
     result = await result.json();
     // console.warn(result)
     setName(result.name);
@@ -24,7 +24,7 @@ const UpdateProduct = () => {
   };
   const UpdateProduct = async () => {
     console.warn(name, price, company, category);
-    let result = await fetch(`http://localhost:5000/products/${params.id}`, {
+    let result = await fetch(`https://e-commerce-8edl.onrender.com/products/${params.id}`, {
       method: "put",
       body: JSON.stringify({ name, price, company, category }),
       headers: {
