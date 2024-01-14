@@ -35,7 +35,7 @@ const Signup = () => {
 
   return (
     <div className="register">
-      <h1>Register</h1>
+      <h1 className="login_h1">Register</h1>
       <input
         className="inputbox"
         type="text"
@@ -59,7 +59,7 @@ const Signup = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Enter Password"
       />
-      <button onClick={collectData} className="appbutton" type="button">
+      <button onClick={collectData} className="appbutton_login" type="button">
         Sign Up
       </button>
     </div>

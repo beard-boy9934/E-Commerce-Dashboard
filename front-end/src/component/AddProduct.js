@@ -49,7 +49,7 @@ const AddProduct = () => {
   };
   return (
     <div className="product">
-      <h1>Add product</h1>
+      <h1 className="product_h1">Add Product</h1>
       <input
         type="text"
         placeholder="Enter product name"
@@ -98,7 +98,7 @@ const AddProduct = () => {
       {error && !company && (
         <span className="invalid_input">Enter valid company</span>
       )}
-      <button onClick={addProduct} className="appbutton">
+      <button onClick={addProduct} className="appbutton_login">
         Add Product
       </button>
     </div>

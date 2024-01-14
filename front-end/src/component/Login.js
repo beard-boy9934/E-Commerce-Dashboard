@@ -31,6 +31,7 @@ const Login = () => {
   };
   return (
     <div className="login">
+      <h1 className="login_h1">Login</h1>
       <input
         type="text"
         className="inputbox"
@@ -45,7 +46,7 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <button onClick={handleLogin} className="appbutton" type="button">
+      <button onClick={handleLogin} className="appbutton_login" type="button">
         Login
       </button>
     </div>

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const bcrypt=require('bcrypt')
 require("./db/config");
 const User = require("./db/User");
 const Product = require("./db/Product");
@@ -11,42 +12,78 @@ app.use(express.json());
 app.use(cors());
  // Registration
 app.post("/register", async (req, resp) => {
-  let user = new User(req.body);
-  let result = await user.save();
-  result = result.toObject();
-  delete result.password;
-  // resp.send(result);
-  Jwt.sign({ result }, jwtKey, { expiresIn: "2h" }, (err, token) => {
-    if (err) {
-      resp.send({
-        result: "something went wrong,Please try after sometime",
-      });
+  try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      resp.status(409).send("User already exists");
+      return;
     }
-    resp.send({ result, auth: token });
-  });
-});
 
-// login
-app.post("/login", async (req, resp) => {
-  // console.log(req.body);
-  if (req.body.password && req.body.email) {
-    let user = await User.findOne(req.body).select("-password");
-    if (user) {
-      Jwt.sign({ user }, jwtKey, { expiresIn: "2h" }, (err, token) => {
-        if (err) {
-          resp.send({
-            result: "something went wrong,Please try after sometime",
-          });
-        }
-        resp.send({ user, auth: token });
-      });
-      // resp.send(user);
-    } else {
-      resp.send({ result: "No user found" });
-    }
+    const hashedPassword = await bcrypt.hash(req.body.password, 10); // 10 is the salt rounds
+
+    let user = new User({
+      email: req.body.email,
+      password: hashedPassword,
+      name: req.body.name,
+    });
+    let result = await user.save();
+    result = result.toObject();
+
+    Jwt.sign({ result }, jwtKey, { expiresIn: "2h" }, (err, token) => {
+      if (err) {
+        resp.status(500).send({
+          result: "Something went wrong. Please try again later.",
+        });
+      }
+      resp.send({ result, auth: token });
+    });
+  } catch (error) {
+    resp.status(500).send("Internal Server Error");
   }
 });
+// login
+app.post("/login", async (req, resp) => {
+  try {
+    if (req.body.password && req.body.email) {
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        // Compare the provided password with the stored hashed password
+        const passwordMatch = await bcrypt.compare(
+          req.body.password,
+          user.password
+        );
 
+        if (passwordMatch) {
+          const userWithoutPassword = { ...user.toObject() };
+          delete userWithoutPassword.password;
+
+          Jwt.sign(
+            { user: userWithoutPassword },
+            jwtKey,
+            { expiresIn: "2h" },
+            (err, token) => {
+              if (err) {
+                resp.status(500).send({
+                  result: "Something went wrong. Please try again later.",
+                });
+              }
+              resp.send({ user: userWithoutPassword, auth: token });
+            }
+          );
+        } else {
+          resp.status(401).send({ result: "Invalid password" });
+        }
+      } else {
+        resp.status(404).send({ result: "No user found" });
+      }
+    } else {
+      resp.status(400).send({ result: "Invalid credentials" });
+    }
+  } catch (error) {
+    resp.status(500).send("Internal Server Error");
+  }
+});
 // add product
 app.post("/add-product", async (req, resp) => {
   let product = new Product(req.body);

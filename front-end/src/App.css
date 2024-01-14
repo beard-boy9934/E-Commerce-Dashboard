@@ -19,13 +19,24 @@
   position: absolute;
   text-align: center;
 }
-.register,
-.product {
-  margin-left: 30%;
+.register,.product{
+  margin-left: 35%;
+  margin-top: 75px;
 }
+/* .product {
+  margin-left: 40%;
+} */
 .login {
-  margin-left: 30%;
-  margin-top: 100px;
+  margin-left: 35%;
+  margin-top: 75px;
+}
+.login_h1{
+  /* border: 2px solid red; */
+  padding-left: 15%;
+}
+.product_h1{
+  /* border: 2px solid red; */
+  padding-left: 10%;
 }
 .inputbox {
   display: block;
@@ -34,8 +45,9 @@
   width: 300px;
   border: 1px solid skyblue;
 }
-.appbutton {
-  margin: 25px;
+.appbutton_login {
+  margin-left: 100px;
+  margin-top: 20px;
   padding: 10px;
   width: 150px;
   background-color: skyblue;
@@ -43,6 +55,16 @@
   border-radius: 10px;
   cursor: pointer;
 }
+.appbutton {
+  margin: 20px;
+  padding: 10px;
+  width: 150px;
+  background-color: skyblue;
+  border: 2px solid;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .nav-right {
   text-align: right;
 }
